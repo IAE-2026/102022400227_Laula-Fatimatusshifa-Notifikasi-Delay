@@ -1,0 +1,9 @@
+type TripStatus {
+  trip_id: ID!
+  status: String!
+}
+
+type Query {
+  tripStatus(id: ID!): TripStatus
+    @field(resolver: "App\\GraphQL\\Queries\\TripStatusQuery@resolve")
+}
