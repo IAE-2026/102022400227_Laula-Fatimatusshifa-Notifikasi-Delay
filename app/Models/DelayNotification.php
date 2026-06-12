@@ -18,6 +18,7 @@ class DelayNotification extends Model
         'notification_status',
         'passenger_name',
         'passenger_email',
-        'sent_at'
+        'sent_at',
+        'receipt_number'
     ];
 }

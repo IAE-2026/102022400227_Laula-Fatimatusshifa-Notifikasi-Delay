@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\DelayNotification;
+use App\Services\SoapAuditService;
+use App\Services\RabbitMqService;
 use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
@@ -72,7 +74,11 @@ class DelayNotificationController extends Controller
         ], 201);
     }
 
-    public function send(Request $request)
+    public function send(
+        Request $request,
+        SoapAuditService $soap,
+        RabbitMqService $rabbit
+    )
     {
         $notification = DelayNotification::find($request->id);
 
@@ -89,9 +95,49 @@ class DelayNotificationController extends Controller
             'sent_at' => now()
         ]);
 
+        $token = str_replace(
+            'Bearer ',
+            '',
+            $request->header('Authorization')
+        );
+
+        $soapResponse = $soap->sendAudit(
+    $token,
+    json_encode([
+        'notification_id' => $notification->id,
+        'trip_id' => $notification->trip_id,
+        'status' => 'sent'
+    ])
+);
+
+        preg_match(
+            '/<iae:ReceiptNumber>(.*?)<\/iae:ReceiptNumber>/',
+            $soapResponse,
+            $matches
+        );
+
+        $receiptNumber = $matches[1] ?? null;
+
+        $notification->update([
+            'receipt_number' => $receiptNumber
+        ]);
+
+        $rabbitResponse = $rabbit->publish(
+            $token,
+            [
+                'event' => 'delay_notification_sent',
+                'notification_id' => $notification->id,
+                'trip_id' => $notification->trip_id,
+                'delay_minutes' => $notification->delay_minutes,
+                'status' => 'sent'
+            ]
+        );
+
         return response()->json([
             'status' => 'success',
             'message' => 'Notification sent successfully',
+            'receipt_number' => $receiptNumber,
+            'rabbitmq_response' => $rabbitResponse,
             'data' => $notification,
             'meta' => [
                 'service_name' => 'Notification-Delay',
