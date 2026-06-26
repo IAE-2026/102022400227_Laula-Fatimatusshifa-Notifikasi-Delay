@@ -27,24 +27,6 @@ class DelayNotificationController extends Controller
             )
         ]
     )]
-    #[OA\Get(
-        path: '/api/v1/trips',
-        summary: 'Get all delay notifications (trips resource alias)',
-        tags: ['Delay Notification'],
-        security: [
-            ['ApiKeyAuth' => []]
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-            new OA\Response(
-                response: 401,
-                description: 'Unauthorized'
-            )
-        ]
-    )]
     public function index()
     {
         $notifications = DelayNotification::all();
@@ -63,43 +45,6 @@ class DelayNotificationController extends Controller
     #[OA\Post(
         path: '/api/v1/delay-notifikasi',
         summary: 'Create a new delay notification',
-        tags: ['Delay Notification'],
-        security: [
-            ['ApiKeyAuth' => []]
-        ],
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(
-                required: ['trip_id', 'route_name', 'delay_minutes', 'delay_reason', 'passenger_name', 'passenger_email'],
-                properties: [
-                    new OA\Property(property: 'trip_id', type: 'string', example: 'TRIP001'),
-                    new OA\Property(property: 'route_name', type: 'string', example: 'Jakarta - Bandung'),
-                    new OA\Property(property: 'departure_time', type: 'string', format: 'date-time', example: '2026-06-25T12:00:00Z', nullable: true),
-                    new OA\Property(property: 'delay_minutes', type: 'integer', example: 30),
-                    new OA\Property(property: 'delay_reason', type: 'string', example: 'Weather issue'),
-                    new OA\Property(property: 'passenger_name', type: 'string', example: 'John Doe'),
-                    new OA\Property(property: 'passenger_email', type: 'string', format: 'email', example: 'john.doe@example.com')
-                ]
-            )
-        ),
-        responses: [
-            new OA\Response(
-                response: 201,
-                description: 'Created successfully'
-            ),
-            new OA\Response(
-                response: 401,
-                description: 'Unauthorized'
-            ),
-            new OA\Response(
-                response: 422,
-                description: 'Validation failed'
-            )
-        ]
-    )]
-    #[OA\Post(
-        path: '/api/v1/trips',
-        summary: 'Create a new delay notification (trips resource alias)',
         tags: ['Delay Notification'],
         security: [
             ['ApiKeyAuth' => []]
@@ -239,37 +184,6 @@ class DelayNotificationController extends Controller
     #[OA\Get(
         path: '/api/v1/delay-notifikasi/{id}',
         summary: 'Get details of a delay notification',
-        tags: ['Delay Notification'],
-        security: [
-            ['ApiKeyAuth' => []]
-        ],
-        parameters: [
-            new OA\Parameter(
-                name: 'id',
-                description: 'Notification ID',
-                in: 'path',
-                required: true,
-                schema: new OA\Schema(type: 'integer')
-            )
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-            new OA\Response(
-                response: 401,
-                description: 'Unauthorized'
-            ),
-            new OA\Response(
-                response: 404,
-                description: 'Notification not found'
-            )
-        ]
-    )]
-    #[OA\Get(
-        path: '/api/v1/trips/{id}',
-        summary: 'Get details of a delay notification (trips resource alias)',
         tags: ['Delay Notification'],
         security: [
             ['ApiKeyAuth' => []]
