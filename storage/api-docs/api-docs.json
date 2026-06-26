@@ -27,8 +27,201 @@
                 "responses": {
                     "200": {
                         "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/delay-notifikasi": {
+            "get": {
+                "tags": [
+                    "Delay Notification"
+                ],
+                "summary": "Get all delay notifications",
+                "operationId": "23a9eec7e0572f4b12a31230beb04535",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Delay Notification"
+                ],
+                "summary": "Create a new delay notification",
+                "operationId": "6d7ca186c880e43e494f3853aca9fd21",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "trip_id",
+                                    "route_name",
+                                    "delay_minutes",
+                                    "delay_reason",
+                                    "passenger_name",
+                                    "passenger_email"
+                                ],
+                                "properties": {
+                                    "trip_id": {
+                                        "type": "string",
+                                        "example": "TRIP001"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Jakarta - Bandung"
+                                    },
+                                    "departure_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2026-06-25T12:00:00Z",
+                                        "nullable": true
+                                    },
+                                    "delay_minutes": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "delay_reason": {
+                                        "type": "string",
+                                        "example": "Weather issue"
+                                    },
+                                    "passenger_name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "passenger_email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/delay-notifikasi/send": {
+            "post": {
+                "tags": [
+                    "Delay Notification"
+                ],
+                "summary": "Send a delay notification",
+                "operationId": "27053e091709865e8e6659a234376ddc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Notification sent successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Notification not found"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/delay-notifikasi/{id}": {
+            "get": {
+                "tags": [
+                    "Delay Notification"
+                ],
+                "summary": "Get details of a delay notification",
+                "operationId": "4e83208ef579a53e443498c37f524e86",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Notification ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Notification not found"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "name": "X-IAE-KEY",
+                "in": "header"
             }
         }
     },

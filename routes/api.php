@@ -9,6 +9,8 @@ Route::prefix('v1')
 
         Route::get('/trips/{id}/status', [DelayNotificationController::class, 'tripStatus']);
 
+        Route::get('/delay-notifikasi', [DelayNotificationController::class, 'index']);
+
         Route::post('/delay-notifikasi', [DelayNotificationController::class, 'store']);
 
         Route::post('/delay-notifikasi/send', [DelayNotificationController::class, 'send']);

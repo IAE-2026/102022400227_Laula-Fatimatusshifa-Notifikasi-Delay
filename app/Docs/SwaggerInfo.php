@@ -9,6 +9,12 @@ use OpenApi\Attributes as OA;
     title: 'Notification Delay Service API',
     description: 'API Documentation for Notification Delay Service'
 )]
+#[OA\SecurityScheme(
+    securityScheme: 'ApiKeyAuth',
+    type: 'apiKey',
+    in: 'header',
+    name: 'X-IAE-KEY'
+)]
 class SwaggerInfo
 {
 }

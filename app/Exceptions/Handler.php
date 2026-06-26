@@ -27,4 +27,65 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($request->is('api/*') || $request->expectsJson()) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Validation failed',
+                    'errors' => $e->errors()
+                ], 422);
+            }
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Method Not Allowed',
+                    'errors' => null
+                ], 405);
+            }
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Resource Not Found',
+                    'errors' => null
+                ], 404);
+            }
+
+            if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthorized',
+                    'errors' => null
+                ], 401);
+            }
+
+            $statusCode = 500;
+            if (method_exists($e, 'getStatusCode')) {
+                $statusCode = $e->getStatusCode();
+            } elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $statusCode = $e->getStatusCode();
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage() ?: 'Internal Server Error',
+                'errors' => null
+            ], $statusCode);
+        }
+
+        return parent::render($request, $e);
+    }
 }
