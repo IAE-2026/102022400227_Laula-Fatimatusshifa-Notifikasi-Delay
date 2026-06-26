@@ -6,39 +6,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/v1/trips/{id}/status": {
-            "get": {
-                "tags": [
-                    "Delay Notification"
-                ],
-                "summary": "Get trip delay status",
-                "operationId": "ed1da54098d1f5fe309eb4d2d1eaaa6d",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Trip ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                },
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/delay-notifikasi": {
             "get": {
                 "tags": [
@@ -338,6 +305,39 @@
                     },
                     "404": {
                         "description": "Notification not found"
+                    }
+                },
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/trips/{id}/status": {
+            "get": {
+                "tags": [
+                    "Delay Notification"
+                ],
+                "summary": "Get trip delay status",
+                "operationId": "ed1da54098d1f5fe309eb4d2d1eaaa6d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Trip ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
                     }
                 },
                 "security": [

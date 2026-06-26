@@ -10,49 +10,6 @@ use OpenApi\Attributes as OA;
 class DelayNotificationController extends Controller
 {
     #[OA\Get(
-        path: '/api/v1/trips/{id}/status',
-        summary: 'Get trip delay status',
-        tags: ['Delay Notification'],
-        security: [
-            ['ApiKeyAuth' => []]
-        ],
-        parameters: [
-            new OA\Parameter(
-                name: 'id',
-                description: 'Trip ID',
-                in: 'path',
-                required: true,
-                schema: new OA\Schema(type: 'integer')
-            )
-        ],
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Success'
-            ),
-            new OA\Response(
-                response: 401,
-                description: 'Unauthorized'
-            )
-        ]
-    )]
-    public function tripStatus($id)
-    {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Trip status retrieved successfully',
-            'data' => [
-                'trip_id' => $id,
-                'status' => 'delayed'
-            ],
-            'meta' => [
-                'service_name' => 'Delay Notification Service',
-                'api_version' => 'v1'
-            ]
-        ], 200);
-    }
-
-    #[OA\Get(
         path: '/api/v1/delay-notifikasi',
         summary: 'Get all delay notifications',
         tags: ['Delay Notification'],
@@ -357,6 +314,49 @@ class DelayNotificationController extends Controller
             'status' => 'success',
             'message' => 'Notification detail retrieved successfully',
             'data' => $notification,
+            'meta' => [
+                'service_name' => 'Delay Notification Service',
+                'api_version' => 'v1'
+            ]
+        ], 200);
+    }
+
+    #[OA\Get(
+        path: '/api/v1/trips/{id}/status',
+        summary: 'Get trip delay status',
+        tags: ['Delay Notification'],
+        security: [
+            ['ApiKeyAuth' => []]
+        ],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'Trip ID',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Success'
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Unauthorized'
+            )
+        ]
+    )]
+    public function tripStatus($id)
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Trip status retrieved successfully',
+            'data' => [
+                'trip_id' => $id,
+                'status' => 'delayed'
+            ],
             'meta' => [
                 'service_name' => 'Delay Notification Service',
                 'api_version' => 'v1'
